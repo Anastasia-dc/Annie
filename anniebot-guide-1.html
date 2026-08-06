@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AnnieBot — Member Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Quicksand:wght@500;600;700;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff6e4;
+    --peach:#ffd9be;
+    --pink:#f7c6db;
+    --pink-deep:#eda0c4;
+    --ink:#3d2645;
+    --ink-soft:#6b4e73;
+    --mint:#b8e8d4;
+    --yellow:#ffe9a8;
+    --white:#ffffff;
+    --sky:#bfe3f2;
+    --notch:10px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .pixel{
+    clip-path: polygon(
+      var(--notch) 0, calc(100% - var(--notch)) 0,
+      100% var(--notch), 100% calc(100% - var(--notch)),
+      calc(100% - var(--notch)) 100%, var(--notch) 100%,
+      0 calc(100% - var(--notch)), 0 var(--notch)
+    );
+  }
+
+  .pixel-border{
+    border:3px solid var(--ink);
+  }
+
+  .hard-shadow{
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  .display{
+    font-family:'Press Start 2P', monospace;
+    line-height:1.6;
+  }
+
+  .handwritten{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+  }
+
+  /* ---------- sticky note ---------- */
+  .sticky-note{
+    position:absolute;
+    background:var(--yellow);
+    border:2.5px solid var(--ink);
+    padding:12px 16px 14px;
+    max-width:190px;
+    transform:rotate(-4deg);
+    box-shadow:4px 4px 0 rgba(61,38,69,.25);
+    z-index:6;
+  }
+  .sticky-note p{
+    margin:0;
+    font-size:19px;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .sticky-note .pin{
+    position:absolute;
+    top:-9px; left:50%;
+    transform:translateX(-50%);
+    width:14px; height:14px;
+    background:var(--pink-deep);
+    border:2px solid var(--ink);
+    border-radius:50%;
+  }
+
+  .pixelmono{
+    font-family:'Silkscreen', monospace;
+    font-weight:700;
+  }
+
+  /* ---------- decorative pixel bits ---------- */
+  .sparkle-row{
+    text-align:center;
+    letter-spacing:.4em;
+    color:var(--pink-deep);
+    font-size:14px;
+    margin:0;
+    user-select:none;
+  }
+
+  .px-heart, .px-star{
+    position:absolute;
+    width:14px;height:14px;
+    background:var(--pink-deep);
+    clip-path: polygon(50% 15%, 61% 0%, 80% 0%, 100% 20%, 100% 40%, 50% 100%, 0% 40%, 0% 20%, 20% 0%, 39% 0%);
+    opacity:.55;
+  }
+  .px-star{
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    background:var(--yellow);
+    border:2px solid var(--ink);
+  }
+
+  /* ---------- floating paws (hero only) ---------- */
+  .paw{
+    position:absolute;
+    font-size:16px;
+    opacity:0;
+    animation: paw-float 6s ease-in infinite;
+    user-select:none;
+    pointer-events:none;
+  }
+  @keyframes paw-float{
+    0%{ opacity:0; transform:translateY(0) rotate(0deg); }
+    10%{ opacity:.5; }
+    85%{ opacity:.4; }
+    100%{ opacity:0; transform:translateY(-160px) rotate(25deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .paw{ animation:none; display:none; }
+  }
+
+  /* ---------- header / hero ---------- */
+  .hero{
+    background: linear-gradient(160deg, var(--cream) 0%, var(--peach) 60%, var(--pink) 100%);
+    padding: 28px 20px 60px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:4px solid var(--ink);
+  }
+
+  .topbar{
+    max-width:1080px;
+    margin:0 auto 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Press Start 2P', monospace;
+    font-size:13px;
+    color:var(--ink);
+  }
+  .brand-badge{
+    width:34px;height:34px;
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+  }
+
+  .topbar a.pill{
+    text-decoration:none;
+  }
+
+  .hero-inner{
+    max-width:1080px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap:40px;
+    align-items:center;
+    position:relative;
+  }
+
+  h1.title{
+    font-size: clamp(28px, 5vw, 46px);
+    margin:0 0 18px;
+    color:var(--ink);
+    text-shadow: 4px 4px 0 var(--pink-deep);
+  }
+
+  .hero-copy p{
+    font-size:17px;
+    line-height:1.7;
+    margin:0 0 26px;
+    max-width:46ch;
+    color:var(--ink-soft);
+  }
+
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--white);
+    color:var(--ink);
+    font-family:'Silkscreen', monospace;
+    font-weight:700;
+    font-size:15px;
+    padding:14px 22px;
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .cta:hover{ background:var(--yellow); }
+
+  .hero-panel{
+    background:var(--white);
+    padding:22px;
+    position:relative;
+  }
+  .hero-panel .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+    padding:9px 0;
+    border-bottom:2px dashed var(--pink-deep);
+  }
+  .hero-panel .row:last-child{ border-bottom:none; }
+  .hero-panel .row span:first-child{ color:var(--ink-soft); }
+  .hero-panel .row code{
+    font-family:'Silkscreen', monospace;
+    background:var(--mint);
+    padding:3px 8px;
+    border:2px solid var(--ink);
+    font-size:12.5px;
+  }
+  .hero-panel h3{
+    margin:0 0 4px;
+    font-family:'Press Start 2P', monospace;
+    font-size:11px;
+  }
+  .hero-panel .sub{
+    color:var(--ink-soft);
+    font-size:12px;
+    margin:0 0 14px;
+  }
+
+  @media (max-width:820px){
+    .hero-inner{ grid-template-columns:1fr; }
+    .sticky-note{ position:static; margin:18px auto 0; transform:rotate(-2deg); }
+  }
+
+  /* ---------- tab dock ---------- */
+  .dock-wrap{
+    background:var(--white);
+    border-bottom:4px solid var(--ink);
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+  .dock{
+    max-width:1080px;
+    margin:0 auto;
+    display:flex;
+    gap:10px;
+    padding:14px 20px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .dock::-webkit-scrollbar{ display:none; }
+
+  .tab{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:var(--cream);
+    border:2.5px solid var(--ink);
+    padding:9px 14px;
+    font-family:'Silkscreen', monospace;
+    font-size:12.5px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .tab:hover{ transform:translateY(-2px); }
+  .tab.active{
+    background:var(--pink-deep);
+    color:var(--white);
+    transform:translateY(-2px);
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .tab .staff-flag{
+    font-size:9px;
+    background:var(--ink);
+    color:var(--white);
+    padding:2px 5px;
+    margin-left:2px;
+  }
+
+  /* ---------- stage ---------- */
+  main{
+    max-width:1080px;
+    margin:0 auto;
+    padding:46px 20px 20px;
+  }
+
+  .stage{
+    background:var(--pink);
+    padding:30px 26px 34px;
+    position:relative;
+    min-height:340px;
+  }
+
+  .stage-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
+  }
+  .stage-emoji{ font-size:30px; }
+  .stage-title{
+    font-family:'Press Start 2P', monospace;
+    font-size:18px;
+  }
+  .stage-blurb{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin:6px 0 24px;
+  }
+
+  .cmd-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:14px;
+  }
+
+  .cmd-card{
+    background:var(--white);
+    border:2.5px solid var(--ink);
+    padding:14px 16px;
+    animation: pop .28s ease both;
+  }
+  @keyframes pop{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .cmd-name{
+    font-family:'Silkscreen', monospace;
+    font-size:13.5px;
+    color:var(--ink);
+    background:var(--mint);
+    display:inline-block;
+    padding:4px 8px;
+    border:2px solid var(--ink);
+    margin-bottom:8px;
+  }
+  .cmd-desc{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:0;
+  }
+
+  .stage.sliding{ animation: slide .32s ease; }
+  @keyframes slide{
+    from{ opacity:0; transform:translateX(24px); }
+    to{ opacity:1; transform:translateX(0); }
+  }
+
+  /* ---------- quick links ---------- */
+  .quicklinks{
+    max-width:1080px;
+    margin:44px auto 0;
+    padding:0 20px;
+  }
+  .quicklinks h2{
+    font-family:'Press Start 2P', monospace;
+    font-size:14px;
+    margin-bottom:18px;
+  }
+  .ql-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
+    gap:16px;
+  }
+  .ql-card{
+    background:var(--white);
+    border:2.5px solid var(--ink);
+    padding:16px;
+    cursor:pointer;
+    transition: transform .12s ease;
+  }
+  .ql-card:hover{ transform:translateY(-4px); box-shadow:4px 4px 0 var(--ink); }
+  .ql-card .emo{ font-size:22px; }
+  .ql-card h4{
+    font-family:'Silkscreen', monospace;
+    font-size:13px;
+    margin:8px 0 4px;
+  }
+  .ql-card p{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  footer{
+    max-width:1080px;
+    margin:56px auto 0;
+    padding:26px 20px 50px;
+    text-align:center;
+  }
+  footer .note{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin:14px 0 6px;
+  }
+  footer .credit{
+    font-family:'Silkscreen', monospace;
+    font-size:11px;
+    color:var(--pink-deep);
+  }
+  footer .signoff{
+    font-size:20px;
+    color:var(--ink-soft);
+    margin:16px 0 2px;
+    transform:rotate(-1.5deg);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="px-star" style="top:18%; left:6%;"></div>
+  <div class="px-heart" style="top:60%; left:3%;"></div>
+  <div class="px-heart" style="top:12%; right:8%;"></div>
+  <div class="px-star" style="bottom:10%; right:14%;"></div>
+
+  <div class="paw" style="left:10%; animation-delay:.2s;">🐾</div>
+  <div class="paw" style="left:24%; animation-delay:2.1s;">🐾</div>
+  <div class="paw" style="left:40%; animation-delay:1s;">🐾</div>
+  <div class="paw" style="left:58%; animation-delay:3.4s;">🐾</div>
+  <div class="paw" style="left:74%; animation-delay:.8s;">🐾</div>
+  <div class="paw" style="left:90%; animation-delay:2.7s;">🐾</div>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-badge pixel pixel-border">🎀</div>
+      ANNIEBOT
+    </div>
+    <a class="pill cta pixel hard-shadow" href="#dock">/help ✧</a>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1 class="title display">member<br>guide</h1>
+      <p>Everything AnnieBot can do, organized so you can actually find it. Pick a category below and browse — or just type <strong>/help</strong> in Discord anytime for the live version.</p>
+      <a class="cta pixel hard-shadow" href="#dock">Browse commands ↓</a>
+    </div>
+
+    <div class="hero-panel pixel pixel-border hard-shadow">
+      <h3>QUICK START</h3>
+      <p class="sub">the four commands everyone uses first</p>
+      <div class="row"><span>Check your coins</span><code>/balance</code></div>
+      <div class="row"><span>Claim daily coins</span><code>/daily</code></div>
+      <div class="row"><span>See your rank</span><code>/rank</code></div>
+      <div class="row"><span>Full command list</span><code>/help</code></div>
+    </div>
+
+    <div class="sticky-note" style="bottom:-26px; left:-14px;">
+      <div class="pin"></div>
+      <p class="handwritten">made this so you don't have to keep dm-ing me asking what commands exist lol ✧ enjoy!</p>
+    </div>
+  </div>
+</header>
+
+<div class="dock-wrap" id="dock">
+  <nav class="dock" id="tabDock"></nav>
+</div>
+
+<main>
+  <section class="stage pixel pixel-border hard-shadow" id="stage"></section>
+</main>
+
+<div class="quicklinks">
+  <h2 class="display" style="font-size:13px;">popular right now</h2>
+  <div class="ql-grid" id="quickLinks"></div>
+</div>
+
+<footer>
+  <p class="sparkle-row">˚ ༘ ♡ ⋆｡˚ ♡ ⋆｡˚ ˚ ༘ ♡</p>
+  <p class="note">This page is a snapshot — the in-Discord <strong>/help</strong> menu always reflects what's live and hides staff-only tools you can't use anyway.</p>
+  <p class="signoff handwritten">put together with lots of coffee and way too many tabs open — hope it helps! 💌</p>
+  <p class="credit">ANNIEBOT · MEMBER GUIDE</p>
+</footer>
+
+<script>
+const DATA = [
+  { key:"fun", emoji:"🎮", label:"Fun", blurb:"just for giggles", staff:false, commands:[
+    {n:"/8ball", d:"Ask the magic 8-ball a question."},
+    {n:"/coinflip", d:"Flip a coin."},
+    {n:"/dice", d:"Roll dice, e.g. 2d6."},
+    {n:"/choose", d:"Let the bot pick between options."},
+    {n:"/joke", d:"Get a random joke."},
+    {n:"/quote", d:"Get a random inspirational quote."},
+    {n:"/cat", d:"Get a random cat picture."},
+    {n:"/dog", d:"Get a random dog picture."},
+  ]},
+  { key:"economy", emoji:"💰", label:"Economy", blurb:"coins go brrr", staff:false, commands:[
+    {n:"/balance", d:"Check your (or someone else's) coin balance."},
+    {n:"/daily", d:"Claim your daily coin reward."},
+    {n:"/work", d:"Work a shift for a random amount of coins."},
+    {n:"/crime", d:"Commit a risky crime for a big payout — or a fine if caught."},
+    {n:"/transfer", d:"Send coins to another member."},
+    {n:"/inventory", d:"View your (or someone else's) inventory."},
+  ]},
+  { key:"gambling", emoji:"🎰", label:"Gambling", blurb:"place your bets~", staff:false, commands:[
+    {n:"/blackjack", d:"Play a hand of blackjack, betting your coins."},
+    {n:"/dicebet", d:"Bet on a dice roll (1-6) — 5x payout if you call it right."},
+    {n:"/cointoss", d:"Bet on a coin flip — 2x payout if you call it right."},
+    {n:"/roulette", d:"Bet on a number (0-36), red, black, or green."},
+    {n:"/poker", d:"Play 5-card video poker (Jacks or Better)."},
+    {n:"/wheelspin", d:"Spin the wheel for a random payout multiplier."},
+    {n:"/crash", d:"Watch the multiplier climb — cash out before it crashes!"},
+    {n:"/rps", d:"Rock, Paper, Scissors against the bot for coins."},
+    {n:"/hilo", d:"Guess higher or lower on cards — multiplier climbs each round."},
+    {n:"/mines", d:"Reveal safe tiles on a minefield — cash out before you hit one."},
+    {n:"/dragontower", d:"Climb the tower one floor at a time — cash out anytime."},
+    {n:"/plinko", d:"Drop a ball through the pegs for a random payout."},
+  ]},
+  { key:"wordle", emoji:"🟩", label:"Wordle", blurb:"guess the word", staff:false, commands:[
+    {n:"/wordle", d:"Start a game — guess the 5-letter word in 6 tries."},
+    {n:"/wordlequit", d:"Give up your current game."},
+  ]},
+  { key:"leveling", emoji:"⭐", label:"Leveling", blurb:"grind that xp", staff:false, commands:[
+    {n:"/rank", d:"Show your (or someone else's) level and XP."},
+    {n:"/leaderboard", d:"Show the server's XP leaderboard."},
+  ]},
+  { key:"steam", emoji:"🕹️", label:"Steam", blurb:"cs2 & steam lookups", staff:false, commands:[
+    {n:"/steam", d:"Look up a public Steam profile."},
+    {n:"/csstats", d:"Show a player's public CS2 stats."},
+    {n:"/topgames", d:"Chart a player's top games by playtime."},
+  ]},
+  { key:"api", emoji:"🌐", label:"Lookups", blurb:"stuff from around the web", staff:false, commands:[
+    {n:"/define", d:"Look up a word's dictionary definition."},
+    {n:"/translate", d:"Translate text between languages."},
+    {n:"/urban", d:"Look up a term on Urban Dictionary."},
+    {n:"/wolfram", d:"Ask Wolfram Alpha a question."},
+    {n:"/crypto", d:"Look up a cryptocurrency's price in USD."},
+    {n:"/apod", d:"NASA's Astronomy Picture of the Day."},
+    {n:"/meme", d:"Get a random meme."},
+    {n:"/latex", d:"Render a LaTeX expression as an image."},
+    {n:"/remind", d:"Set a reminder (e.g. 10m, 2h30m, 1d)."},
+    {n:"/reminders", d:"List your pending reminders."},
+  ]},
+  { key:"ai", emoji:"🤖", label:"AI", blurb:"ask me anything~", staff:false, commands:[
+    {n:"/ask", d:"Ask the AI a question."},
+    {n:"/summarize", d:"Summarize a block of text."},
+    {n:"/explain", d:"Get a simple explanation of a topic."},
+    {n:"/rewrite", d:"Rewrite text to be clearer or more polished."},
+    {n:"/translateai", d:"Translate text using AI (more natural than /translate)."},
+  ]},
+  { key:"utility", emoji:"🔧", label:"Utility", blurb:"handy little tools", staff:false, commands:[
+    {n:"/ping", d:"Show the bot's latency."},
+    {n:"/userinfo", d:"Show info about yourself or another member."},
+    {n:"/avatar", d:"Show your avatar or another member's."},
+    {n:"/serverinfo", d:"Show info about this server."},
+    {n:"/weather", d:"Show current weather for a city."},
+    {n:"/year", d:"Show how much of the current year has passed."},
+  ]},
+  { key:"tickets", emoji:"🎫", label:"Tickets", blurb:"need help? open one", staff:false, commands:[
+    {n:"/close", d:"Close the current ticket."},
+    {n:"/ticketpanel", d:"Post the ticket-creation panel (staff)."},
+  ]},
+  { key:"music", emoji:"🎶", label:"Music", blurb:"tunes for the vc", staff:false, commands:[
+    {n:"/join", d:"Join your current voice channel."},
+    {n:"/play", d:"Play a song (URL or search query)."},
+    {n:"/pause", d:"Pause playback."},
+    {n:"/resume", d:"Resume playback."},
+    {n:"/skip", d:"Skip the current song."},
+    {n:"/queue", d:"Show the current song queue."},
+    {n:"/stop", d:"Stop playback and clear the queue."},
+    {n:"/leave", d:"Leave the voice channel."},
+  ]},
+  { key:"moderation", emoji:"🛡️", label:"Moderation", blurb:"keeping things tidy", staff:true, commands:[
+    {n:"/warn", d:"Log a warning against a member."},
+    {n:"/warnings", d:"List a member's warnings."},
+    {n:"/mute", d:"Timeout a member for a number of minutes."},
+    {n:"/kick", d:"Kick a member from the server."},
+    {n:"/ban", d:"Ban a member from the server."},
+    {n:"/purge", d:"Bulk delete messages in this channel."},
+  ]},
+  { key:"automod", emoji:"🚨", label:"AutoMod", blurb:"quiet lil guardian", staff:true, commands:[
+    {n:"/automod", d:"Enable or disable automod for this server."},
+  ]},
+  { key:"settings", emoji:"⚙️", label:"Settings", blurb:"make it yours", staff:true, commands:[
+    {n:"/settings", d:"View this server's current configuration."},
+    {n:"/setprefix", d:"Set this server's text command prefix."},
+    {n:"/setwelcomechannel", d:"Set the welcome message channel."},
+    {n:"/setwelcomemessage", d:"Customize the welcome message."},
+    {n:"/setgoodbyechannel", d:"Set the goodbye message channel."},
+    {n:"/setautorole", d:"Set the role given automatically on join."},
+    {n:"/setmodrole", d:"Set the role that counts as a moderator."},
+    {n:"/setlogchannel", d:"Set the general server log channel."},
+    {n:"/setlevelupchannel", d:"Set the level-up announcement channel."},
+    {n:"/setticketcategory", d:"Set the category where tickets are created."},
+  ]},
+  { key:"stats", emoji:"📊", label:"Stats", blurb:"peek under the hood", staff:true, commands:[
+    {n:"/botinfo", d:"Show information about the bot."},
+    {n:"/latency", d:"Show the bot's current websocket latency."},
+    {n:"/memory", d:"Show the bot's memory usage."},
+    {n:"/cpu", d:"Show the bot's CPU usage."},
+  ]},
+];
+
+const dock = document.getElementById('tabDock');
+const stage = document.getElementById('stage');
+const quick = document.getElementById('quickLinks');
+
+DATA.forEach(cat=>{
+  const tab = document.createElement('button');
+  tab.className = 'tab';
+  tab.dataset.key = cat.key;
+  tab.innerHTML = `${cat.emoji} ${cat.label.toUpperCase()}` + (cat.staff ? `<span class="staff-flag">STAFF</span>` : '');
+  tab.addEventListener('click', ()=> render(cat.key));
+  dock.appendChild(tab);
+});
+
+const FEATURED = ["gambling","economy","wordle","tickets"];
+FEATURED.forEach(key=>{
+  const cat = DATA.find(c=>c.key===key);
+  const card = document.createElement('div');
+  card.className = 'ql-card';
+  card.innerHTML = `<div class="emo">${cat.emoji}</div><h4>${cat.label.toUpperCase()}</h4><p>${cat.commands.length} commands — ${cat.blurb}</p>`;
+  card.addEventListener('click', ()=>{ render(key); document.getElementById('dock').scrollIntoView({behavior:'smooth'}); });
+  quick.appendChild(card);
+});
+
+function render(key){
+  const cat = DATA.find(c=>c.key===key) || DATA[0];
+  document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('active', t.dataset.key===cat.key));
+
+  stage.classList.remove('sliding');
+  void stage.offsetWidth; // restart animation
+  stage.classList.add('sliding');
+
+  stage.innerHTML = `
+    <div class="stage-head">
+      <span class="stage-emoji">${cat.emoji}</span>
+      <span class="stage-title display">${cat.label.toUpperCase()}</span>
+    </div>
+    <p class="stage-blurb">${cat.blurb}${cat.staff ? " · staff-only category" : ""}</p>
+    <div class="cmd-grid">
+      ${cat.commands.map(c=>`
+        <div class="cmd-card">
+          <div class="cmd-name">${c.n}</div>
+          <p class="cmd-desc">${c.d}</p>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+render('fun');
+</script>
+
+</body>
+</html>
